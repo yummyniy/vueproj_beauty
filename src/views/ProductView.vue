@@ -21,6 +21,8 @@
         </div>
       </div>
     </div>
+    <!-- 分頁元件 -->
+    <PaginationComp :pages="pagination" @get-products="getProducts"></PaginationComp>
   </div>
   <!-- <div class="container">
     <table class="table align-middle">
@@ -63,21 +65,25 @@
 </template>
 <script>
 // import ProductModal from '@/components/ProductModal.vue'
+import PaginationComp from '@/components/PaginationComp.vue'
 export default {
   data () {
     return {
       products: [],
-      product: {}
+      product: {},
+      pagination: {}
     }
   },
-  // components: {
-  //   ProductModal
-  // },
+  components: {
+    // ProductModal
+    PaginationComp
+  },
   methods: {
-    getProducts () {
-      this.$http.get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
+    getProducts (page = 1) {
+      this.$http.get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}`
       ).then((res) => {
         this.products = res.data.products
+        this.pagination = res.data.pagination
       })
     },
     openProductModal (id) {
